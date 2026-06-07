@@ -16,5 +16,5 @@ COPY . .
 # Default port (Render will override this via $PORT)
 EXPOSE 8501
 
-# Default command to run the Streamlit app
-CMD ["sh", "-c", "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"]
+# Default command to run the Streamlit app using the wrapper script
+CMD ["python", "run_streamlit.py"]
