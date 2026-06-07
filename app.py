@@ -22,6 +22,10 @@ st.markdown(
         .stApp {
             background: linear-gradient(180deg, #f4f7fb 0%, #ffffff 45%, #eef4ff 100%);
         }
+        /* Hide default Streamlit Deploy button */
+        .stDeployButton {
+            display: none !important;
+        }
         .hero {
             padding: 1.5rem 1.75rem;
             border-radius: 24px;
