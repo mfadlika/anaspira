@@ -16,6 +16,8 @@ COLUMN_ALIASES = {
     "platform": "sumber",
     "pengirim": "nama",
     "nama_warga": "nama",
+    "nama_lengkap": "nama",
+    "nama_anda": "nama",
     "warga": "nama",
     "isi": "teks",
     "keluhan": "teks",
@@ -23,6 +25,8 @@ COLUMN_ALIASES = {
     "masukan": "teks",
     "pesan": "teks",
     "uraian": "teks",
+    "deskripsi": "teks",
+    "isi_laporan": "teks",
 }
 
 
