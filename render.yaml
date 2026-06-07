@@ -1,9 +1,19 @@
 services:
-  # A Docker web service
+  # 1. Backend API (FastAPI)
   - type: web
-    name: fastapi-example
+    name: anaspira-backend
     runtime: python
     plan: free
-    autoDeploy: false
+    autoDeploy: true
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+
+  # 2. Frontend Dashboard (Streamlit)
+  - type: web
+    name: anaspira-frontend
+    runtime: python
+    plan: free
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+

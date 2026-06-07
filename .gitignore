@@ -26,8 +26,6 @@ wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -51,10 +49,11 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Django/SQLite stuff:
 *.log
 local_settings.py
-db.sqlite3
+*.db
+data/*.db
 
 # Flask stuff:
 instance/
@@ -74,6 +73,7 @@ target/
 
 # pyenv
 .python-version
+ui/python-version
 pyvenv.cfg
 
 # celery beat schedule file

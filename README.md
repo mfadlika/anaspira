@@ -1,27 +1,90 @@
-# Deploy FastAPI on Render
+# Sistem Analisis Aspirasi Warga
 
-Use this repo as a template to deploy a Python [FastAPI](https://fastapi.tiangolo.com) service on Render.
+Aplikasi full-stack berbasis Python untuk mengolah aspirasi, keluhan, serta masukan warga desa dari Google Form, Google Sheets, formulir digital, atau media sosial menjadi insight yang terstruktur.
 
-See https://render.com/docs/deploy-fastapi or follow the steps below:
+## Fitur
 
-## Manual Steps
+- Import data dari CSV atau Excel.
+- Import data langsung dari Google Sheets atau response sheet Google Form yang sudah dipublikasikan sebagai CSV.
+- Preprocessing teks Bahasa Indonesia.
+- Klasifikasi topik berbasis model semantik ringan + kata kunci.
+- Analisis sentimen berbasis leksikon dengan penanganan negasi.
+- Ekstraksi kata kunci dengan TF-IDF.
+- Penilaian urgensi untuk membantu prioritas kebijakan.
+- Dashboard interaktif untuk melihat tren dan detail aspirasi.
+- API FastAPI untuk ingest, query, summary, dan prioritas.
+- Database SQLite lokal untuk menyimpan hasil analisis.
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
-2. Create a new Web Service on Render.
-3. Specify the URL to your new repository or this repository.
-4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
-5. Specify the following as the Start Command.
+## Struktur Data yang Disarankan
 
-    ```shell
-    uvicorn main:app --host 0.0.0.0 --port $PORT
-    ```
+Kolom minimal:
 
-6. Click Create Web Service.
+- `tanggal`
+- `sumber`
+- `nama`
+- `teks`
 
-Or simply click:
+Kolom lain akan tetap dipertahankan jika ada.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/fastapi)
+## Menjalankan Aplikasi
 
-## Thanks
+1. Buat environment Python.
+2. Install dependensi:
 
-Thanks to [Harish](https://harishgarg.com) for the [inspiration to create a FastAPI quickstart for Render](https://twitter.com/harishkgarg/status/1435084018677010434) and for some sample code!
+```bash
+pip install -r requirements.txt
+```
+
+3. Jalankan backend API:
+
+```bash
+python run_backend.py
+```
+
+```bash
+python run_all.py
+```
+
+4. Jalankan dashboard:
+
+```bash
+streamlit run app.py
+```
+
+Dashboard akan berjalan di `http://localhost:8501`, sedangkan API tersedia di `http://localhost:3000`.
+
+Jika Anda sedang berada di folder `backend/`, jalankan API dengan:
+
+```bash
+uvicorn main:app --reload
+```
+
+## Integrasi Google Form / Google Sheets
+
+Google Form biasanya menyimpan respons ke Google Sheets. Di dashboard, pilih mode `Google Sheets / Form responses` lalu tempel URL spreadsheet yang sudah dipublikasikan sebagai CSV. Jika Anda memakai endpoint API, gunakan `POST /ingest/google-sheets` with payload JSON berikut:
+
+```json
+{
+  "url": "https://docs.google.com/spreadsheets/d/ID_SPREADSHEET/edit#gid=0",
+  "replace_existing": true
+}
+```
+
+URL akan dikonversi otomatis ke format ekspor CSV jika spreadsheet dapat diakses publik.
+
+## Endpoint API
+
+- `GET /health`
+- `POST /ingest/sample`
+- `POST /ingest/file`
+- `POST /ingest/google-sheets`
+- `POST /ingest/records`
+- `GET /records`
+- `GET /summary`
+- `GET /priorities`
+- `DELETE /records`
+
+## Catatan Implementasi
+
+Pendekatan NLP di proyek ini memakai model semantik ringan berbasis TF-IDF char n-gram untuk topik, ditambah leksikon sentimen dengan negasi agar lebih stabil untuk bahasa warga sehari-hari. Struktur ini tetap ringan dan bisa dikembangkan ke model transformer Bahasa Indonesia jika nanti dibutuhkan.
+
